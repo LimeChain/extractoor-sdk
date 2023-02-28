@@ -12,8 +12,27 @@ Extractor Client for ethereum. Uses the fetch API in order to trigger RPC reques
 
 ## OptimismExtractoorClient
 Extractoor Client for Optimism Bedrock. Exposes method for generating the output root data for a given L1 block by number - `generateLatestOutputData`. 
-**IMPORTANT: Optimism Bedrock is still only on goerli and the `OptimismExtractoorClient` uses the currently available addresses based on goerli. When Bedrock goes mainnet these will be changed and moved into config.**
+Instantiating the client can be as simple as:
+```
+import { OptimismExtractoorClient, BASE_GOERLI_CONFIG } from 'extractoor'
 
+const fetcher = new OptimismExtractoorClient({YourL2RPC}, {YourL1RPC}, {YourConfig});
+// const fetcher = new OptimismExtractoorClient(process.env.BASE_GOERLI_RPC_URL, process.env.GOERLI_RPC_URL, BASE_GOERLI_CONFIG);
+```
+
+Two default configs are available at te moment `OPTIMISM_GOERLI_CONFIG` and `BASE_GOERLI_CONFIG`. You can connect to a another OptimismBedrock rollup by providing config conforming to the `OptimismNetworkConfig` interface. Example:
+
+```
+import { OptimismExtractoorClient, OptimismNetworkConfig } from 'extractoor'
+
+const customConfig: OptimismNetworkConfig =  = {
+    L2WithdrawalContractAddress: "0x4200000000000000000000000000000000000016",
+    OutputOracleAddress: "0xE6Dfba0953616Bacab0c9A8ecb3a9BBa77FC15c0",
+    OutputOracleL2OutputPosition: 3
+}
+
+const fetcher = new OptimismExtractoorClient(process.env.CUSTOM_BEDROCK_RPC, process.env.L1_RPC, customConfig);
+```
 # Contributing
 Pull requests welcome. The project is built via `tsdx`. In order to run the compilation in watch mode use 
 ```
@@ -35,7 +54,7 @@ Various runnable examples can be found in the `example` directory. Refer to its 
 ## Getting the necessary data for OptimismInbox message receive
 ```
 import { BN, bufferToHex, keccak, setLengthLeft, toBuffer, unpadBuffer } from 'ethereumjs-util'
-import { MPTProofsEncoder, OptimismExtractoorClient } from 'extractoor'
+import { MPTProofsEncoder, OptimismExtractoorClient, OPTIMISM_GOERLI_CONFIG } from 'extractoor'
 const dotenv = require('dotenv');
 dotenv.config()
 
@@ -52,7 +71,7 @@ const indexBN = new BN(indexInTheArray);
 const slotBN = arrayDefinitionBN.add(indexBN);
 const slot = `0x${slotBN.toString("hex")}`
 
-const fetcher = new OptimismExtractoorClient(process.env.OPTIMISM_GOERLI_RPC_URL || "", process.env.GOERLI_RPC_URL || "");
+const fetcher = new OptimismExtractoorClient(process.env.OPTIMISM_GOERLI_RPC_URL, process.env.GOERLI_RPC_URL, OPTIMISM_GOERLI_CONFIG);
 
 // Step 2 - Get all the information needed for the Optimism Output Root inclusion inside L1 proof
 const output = await fetcher.generateLatestOutputData(`0x${blockNum.toString(16)}`);

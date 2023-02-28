@@ -1,5 +1,5 @@
 import { bufferToHex } from 'ethereumjs-util'
-import { MPTProofVerifier, MPTProofsEncoder } from 'extractoor'
+import { MPTProofVerifier, MPTProofsEncoder } from './../src'
 
 
 async function run() {
