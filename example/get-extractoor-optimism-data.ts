@@ -1,15 +1,14 @@
 import { BN, bufferToHex, keccak, setLengthLeft, toBuffer, unpadBuffer } from 'ethereumjs-util'
-import { MPTProofsEncoder, OptimismExtractoorClient } from 'extractoor'
-import { } from 'extractoor'
+import { MPTProofsEncoder, OptimismExtractoorClient, OPTIMISM_GOERLI_CONFIG } from './../src'
 const dotenv = require('dotenv');
 dotenv.config()
 
 async function run() {
 
     // Inputs
-    const blockNum = 8529353; // The L1 block number we will be proving contains the Optimism state
     const targetAccount = "0xcA7B05255F52C700AE25C278DdB03C02459F7AE8"; // The account inside Optimism we are proving for
     const arrayDefinitionPosition = 0; // Definition position of the array inside the solidity contract
+    const blockNum = 8529353; // The L1 block number we will be proving contains the Optimism state
     const indexInTheArray = 1; // The index of the element you are looking for
 
     // Step 1 - Derive the storage slot from the array definition and index of the array
@@ -19,7 +18,7 @@ async function run() {
     const slotBN = arrayDefinitionBN.add(indexBN);
     const slot = `0x${slotBN.toString("hex")}`
 
-    const fetcher = new OptimismExtractoorClient(process.env.OPTIMISM_GOERLI_RPC_URL || "", process.env.GOERLI_RPC_URL || "");
+    const fetcher = new OptimismExtractoorClient(process.env.OPTIMISM_GOERLI_RPC_URL || "", process.env.GOERLI_RPC_URL || "", OPTIMISM_GOERLI_CONFIG);
 
     // For informational purposes
     const l1Block = await fetcher.ethereum.getBlockByNumber(`0x${blockNum.toString(16)}`);

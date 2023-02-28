@@ -1,12 +1,11 @@
 import { bufferToHex } from 'ethereumjs-util'
-import { MPTProofVerifier } from 'extractoor'
-import { OptimismExtractoorClient } from 'extractoor'
+import { MPTProofVerifier, OptimismExtractoorClient, OPTIMISM_GOERLI_CONFIG } from './../src'
 const dotenv = require('dotenv');
 dotenv.config()
 
 async function run() {
     const blockNum = 8525295;
-    const fetcher = new OptimismExtractoorClient(process.env.OPTIMISM_GOERLI_RPC_URL || "", process.env.GOERLI_RPC_URL || "");
+    const fetcher = new OptimismExtractoorClient(process.env.OPTIMISM_GOERLI_RPC_URL || "", process.env.GOERLI_RPC_URL || "", OPTIMISM_GOERLI_CONFIG);
 
     const output = await fetcher.generateLatestOutputData(`0x${blockNum.toString(16)}`);
 
