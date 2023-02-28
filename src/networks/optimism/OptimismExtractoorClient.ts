@@ -14,7 +14,7 @@ export const OPTIMISM_GOERLI_CONFIG: OptimismNetworkConfig = {
 
 export const BASE_GOERLI_CONFIG: OptimismNetworkConfig = {
     L2WithdrawalContractAddress: "0x4200000000000000000000000000000000000016",
-    OutputOracleAddress: "0xE6Dfba0953616Bacab0c9A8ecb3a9BBa77FC15c0",
+    OutputOracleAddress: "0x2A35891ff30313CcFa6CE88dcf3858bb075A2298",
     OutputOracleL2OutputPosition: 3
 }
 
