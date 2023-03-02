@@ -51,17 +51,17 @@ export class OptimismExtractoorClient {
 
         // STEP 1 Get from the L1 Bedrock OutputOracle latest block number via latestBlockNumber view function - B.
         const latestBlockNumberCalldata = OutputOracleABICoder.latestBlockNumber();
-        const BHex = await this.ethereum.ethCall(L1Block.number, this.networkConfig.OutputOracleAddress, latestBlockNumberCalldata)
+        const BHex = await this.ethereum.ethCall(this.networkConfig.OutputOracleAddress, latestBlockNumberCalldata, L1Block.number)
         const B = bufferToInt(toBuffer(BHex));
 
         // STEP 2 Get from the L1 Bedrock OutputOracle the L2 Output index for B via getL2OutputIndexAfter - I
         const getL2OutputIndexAfterCalldata = OutputOracleABICoder.getL2OutputIndexAfter(B);
-        const IHex = await this.ethereum.ethCall(L1Block.number, this.networkConfig.OutputOracleAddress, getL2OutputIndexAfterCalldata);
+        const IHex = await this.ethereum.ethCall(this.networkConfig.OutputOracleAddress, getL2OutputIndexAfterCalldata, L1Block.number);
         const I = bufferToInt(toBuffer(IHex));
 
         // STEP 3 Get from the L1 Bedrock OutputOracle the L2 Output for block I
         const getL2OutputCalldata = OutputOracleABICoder.getL2Output(I);
-        const l2OutputDataHex = await this.ethereum.ethCall(L1Block.number, this.networkConfig.OutputOracleAddress, getL2OutputCalldata);
+        const l2OutputDataHex = await this.ethereum.ethCall(this.networkConfig.OutputOracleAddress, getL2OutputCalldata, L1Block.number);
         const contractL2OutputData = OutputOracleABICoder.decodeL2Output(l2OutputDataHex);
 
         if (Number(contractL2OutputData.l2BlockNumber) != B) {

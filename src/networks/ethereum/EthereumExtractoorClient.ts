@@ -34,10 +34,10 @@ export class EthereumExtractoorClient {
         return this.request("eth_getBlockByNumber", [block, hyderated]);
     }
 
-    async ethCall(block: number | string, to: string, input: any): Promise<any> {
+    async ethCall(to: string, input: any, block: number | string): Promise<any> {
         return this.request("eth_call", [{
             to: to,
-            input: input
+            data: input
         }, block])
     }
 
